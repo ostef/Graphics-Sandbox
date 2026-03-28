@@ -36,6 +36,12 @@ InitFrameDataAllocators :: () {
     }
 }
 
+DestroyFrameDataAllocators :: () {
+    for * g_frame_data_allocators {
+        DestroyFrameDataAllocator(it);
+    }
+}
+
 FrameDataBuffer :: () -> *GfxBuffer {
     using allocator := *g_frame_data_allocators[GetFrameInFlight()];
 

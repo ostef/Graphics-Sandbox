@@ -301,7 +301,7 @@ ImGuiPass :: (cmd_buffer : *GfxCommandBuffer, draw_data : *ImGui.ImDrawData) {
 
         BindVertexBuffer(*pass, 0, vertex_buffer);
         BindIndexBuffer(*pass, ifx size_of(ImGui.ImDrawIdx) == 2 then .UInt16 else .UInt32, index_buffer);
-        BindGraphicsBindingSet(*pass, 1, *pass_binding_set);
+        BindGraphicsBindingSet(*pass, 0, *pass_binding_set);
 
         current_texture : *GfxTexture;
 
@@ -349,7 +349,7 @@ ImGuiPass :: (cmd_buffer : *GfxCommandBuffer, draw_data : *ImGui.ImDrawData) {
                             texture=.{sampler=*g_linear_clamp_sampler, texture=xx cmd.TextureId},
                         });
 
-                        BindGraphicsBindingSet(*pass, 2, *binding_set);
+                        BindGraphicsBindingSet(*pass, 1, *binding_set);
                         current_texture = xx cmd.TextureId;
                     }
 

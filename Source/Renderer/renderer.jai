@@ -53,6 +53,8 @@ ShutdownRenderer :: () {
 
     DestroyImGuiRenderer();
 
+    DestroyFrameDataAllocators();
+
     for g_graphics_pipelines {
         DestroyGfxGraphicsPipeline(it);
     }
@@ -64,6 +66,10 @@ ShutdownRenderer :: () {
     ArrayFree(*g_compute_pipelines);
 
     DestroyRenderTargets();
+
+    DestroyBindingSetAllocators();
+
+    DestroyAllBindingSetLayouts();
 
     DestroyAllShaders();
 }
