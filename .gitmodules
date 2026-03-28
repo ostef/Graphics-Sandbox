@@ -1,0 +1,6 @@
+[submodule "Source/Modules/Win32"]
+	path = Source/Modules/Win32
+	url = ssh://git@github.com/ostef/Jai-Win32
+[submodule "Source/Modules/Linalg"]
+	path = Source/Modules/Linalg
+	url = ssh://git@github.com/ostef/Linalg
