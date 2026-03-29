@@ -24,32 +24,6 @@ CMake_Options :: string.[
     "-DASSIMP_IGNORE_GIT_HASH=ON",
 ];
 
-Assimp_Headers :: string.[
-    "Source/include/assimp/aabb.h",
-    "Source/include/assimp/anim.h",
-    "Source/include/assimp/camera.h",
-    "Source/include/assimp/cexport.h",
-    "Source/include/assimp/cfileio.h",
-    "Source/include/assimp/cimport.h",
-    "Source/include/assimp/color4.h",
-    "Source/include/assimp/defs.h",
-    "Source/include/assimp/light.h",
-    "Source/include/assimp/material.h",
-    "Source/include/assimp/matrix3x3.h",
-    "Source/include/assimp/matrix4x4.h",
-    "Source/include/assimp/mesh.h",
-    "Source/include/assimp/metadata.h",
-    "Source/include/assimp/pbrmaterial.h",
-    "Source/include/assimp/postprocess.h",
-    "Source/include/assimp/quaternion.h",
-    "Source/include/assimp/scene.h",
-    "Source/include/assimp/texture.h",
-    "Source/include/assimp/types.h",
-    "Source/include/assimp/vector2.h",
-    "Source/include/assimp/vector3.h",
-    "Source/include/assimp/version.h",
-];
-
 FlagsForSpecificDeclaration :: struct {
     name : string;
     flags : Declaration_Flags;
