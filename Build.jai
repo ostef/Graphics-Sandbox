@@ -156,13 +156,13 @@ Build :: () {
 
     options := get_build_options(ws);
     options.output_type = .EXECUTABLE;
-    options.output_executable_name = "sandbox";
+    options.output_executable_name = "graphics";
     options.interactive_bytecode_debugger = get_build_options().interactive_bytecode_debugger;
     options.import_path = get_build_options().import_path;
     options.Commonly_Propagated = get_build_options().Commonly_Propagated;
     options.write_added_strings = true;
     options.stack_trace = true;
-    options.text_output_flags = 0;
+    options.text_output_flags = .OUTPUT_LINK_LINE;
 
     #if OS == .LINUX {
         #import "POSIX";
@@ -235,6 +235,10 @@ Build :: () {
 
         if !file_exists("SDL2.dll") {
             copy_file("Source/Modules/SDL/Libs/Windows/SDL2.dll", "SDL2.dll");
+        }
+
+        if !file_exists("assimp-vc143-mtd.dll") {
+            copy_file("Source/Modules/Assimp/Libs/Windows/assimp-vc143-mtd.dll", "assimp-vc143-mtd.dll");
         }
     }
 }

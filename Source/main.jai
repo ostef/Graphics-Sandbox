@@ -4,6 +4,9 @@
 #import "Type_Utils";
 
 #import "SDL";
+
+Assimp :: #import "Assimp";
+
 ImGui :: #import "ImGui";
 ImGui_SDL :: #import "ImGui/Impl/SDL";
 
@@ -81,7 +84,7 @@ main :: () {
         window_flags |= SDL_WINDOW_VULKAN;
     }
 
-    g_window = SDL_CreateWindow("Graphics Sandbox", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1600, 900, window_flags);
+    g_window = SDL_CreateWindow("Graphics", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1600, 900, window_flags);
     defer SDL_DestroyWindow(g_window);
 
     InitGfxContext(g_window);
@@ -137,6 +140,22 @@ main :: () {
         ImGui_SDL.NewFrame();
         ImGui.NewFrame();
         ImGui.ShowDemoWindow();
+
+        if ImGui.Begin("Stats") {
+            stats := GetGfxFrameStatistics();
+            ImGui.Text("Num Draw Calls: %", stats.num_draw_calls);
+            ImGui.Text("Num Dispatch Calls: %", stats.num_dispatch_calls);
+            ImGui.Text("Num Render Passes: %", stats.num_render_passes);
+            ImGui.Text("Num Compute Passes: %", stats.num_compute_passes);
+            ImGui.Text("Num Graphics Binding Set Binds: %", stats.num_graphics_binding_set_binds);
+            ImGui.Text("Num Compute Binding Set Binds: %", stats.num_compute_binding_set_binds);
+            ImGui.Text("Num Graphics Pipeline Binds: %", stats.num_graphics_pipeline_binds);
+            ImGui.Text("Num Compute Pipeline Binds: %", stats.num_compute_pipeline_binds);
+            ImGui.Text("Num Texture Barrieres: %", stats.num_texture_barriers);
+            ImGui.Text("Num Memory Barriers: %", stats.num_memory_barriers);
+            ImGui.Text("Num Execution Barriers: %", stats.num_execution_barriers);
+        }
+        ImGui.End();
 
         ImGui.Render();
 

@@ -42,11 +42,11 @@ g_begin_end_string_args : [..]*Declaration;
     set_build_options_dc(.{do_output = false});
 
 #if OS == .WINDOWS {
-    compile_source := Always_Compile_Cpp_Source || !file_exists("win/ImGui.dll") || !file_exists("win/ImGui.lib");
+    compile_source := Always_Compile_Cpp_Source || !file_exists("Libs/Windows/ImGui.dll") || !file_exists("Libs/Windows/ImGui.lib");
 } else #if OS == .LINUX {
-    compile_source := Always_Compile_Cpp_Source || !file_exists("linux/ImGui.so") || !file_exists("linux/ImGui.a");
+    compile_source := Always_Compile_Cpp_Source || !file_exists("Libs/Linux/ImGui.so") || !file_exists("Libs/Linux/ImGui.a");
 } else #if OS == .MACOS {
-    compile_source := Always_Compile_Cpp_Source || !file_exists("macos/ImGui.dylib") || !file_exists("macos/ImGui.a");
+    compile_source := Always_Compile_Cpp_Source || !file_exists("Libs/MacOS/ImGui.dylib") || !file_exists("Libs/MacOS/ImGui.a");
 }
 
     args := get_build_options().compile_time_command_line;
