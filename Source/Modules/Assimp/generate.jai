@@ -24,16 +24,6 @@ CMake_Options :: string.[
     "-DASSIMP_IGNORE_GIT_HASH=ON",
 ];
 
-FlagsForSpecificDeclaration :: struct {
-    name : string;
-    flags : Declaration_Flags;
-}
-
-Global_Declarations_Flags :: FlagsForSpecificDeclaration.[
-];
-
-Defines :: string.[];
-
 #run {
     #import "Compiler";
 
@@ -203,11 +193,5 @@ GenerateBindings :: () -> bool {
     opts.generate_compile_time_struct_checks = false;
     // opts.strip_flags |= .INLINED_FUNCTIONS;
 
-    opts.visitor = HandleDeclaration;
-
     return generate_bindings(opts, output_filename);
-}
-
-HandleDeclaration :: (decl : *Declaration, parent_decl : *Declaration) -> Declaration_Visit_Result {
-    return .RECURSE;
 }
