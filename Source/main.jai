@@ -22,6 +22,8 @@ Math :: #import "Math";
 #load "utils.jai";
 #load "input.jai";
 #load "abstraction_layer.jai";
+#load "upload.jai";
+#load "mesh.jai";
 #load "Renderer/renderer.jai";
 
 g_console_logger : ConsoleLogger;

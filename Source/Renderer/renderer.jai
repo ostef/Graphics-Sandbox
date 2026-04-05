@@ -96,7 +96,7 @@ RecreateRenderTargets :: () {
     g_final_texture = CreateGfxTexture("Final", desc);
 }
 
-RenderFrame :: () {
+RenderFrame :: (world : *World, camera : *Camera) {
     BeginGfxFrame();
 
     ProfilerBeginFrame(*g_gpu_frame_profiler);
@@ -105,6 +105,10 @@ RenderFrame :: () {
     ResetBindingSetAllocators();
 
     cmd_buffer := CreateGfxCommandBuffer("Main");
+
+    upload_pass := BeginGfxCopyPass(*cmd_buffer, "Upload");
+        PerformPendingBufferUploads(*upload_pass);
+    EndGfxCopyPass(*upload_pass);
 
     AddTextureBarrier(*cmd_buffer, .Undefined, .ColorAttachment, *g_final_texture);
 
