@@ -24,6 +24,8 @@ Math :: #import "Math";
 #load "abstraction_layer.jai";
 #load "upload.jai";
 #load "mesh.jai";
+#load "world.jai";
+#load "camera.jai";
 #load "Renderer/renderer.jai";
 
 g_console_logger : ConsoleLogger;
@@ -41,6 +43,8 @@ g_avg_frame_time : float = 1 / 60.0;
 g_min_frame_time : float = 1 / 60.0;
 g_max_frame_time : float = 1 / 60.0;
 g_last_frame_time : float = 1 / 60.0;
+
+Log_Assets :: Log_Section.{name="Assets"};
 
 UpdateFrameTimes :: () {
     if g_last_frame_start_time != .{} {
@@ -104,6 +108,10 @@ main :: () {
     InitRenderer();
     defer ShutdownRenderer();
 
+    camera : Camera;
+    world : World;
+    LoadWorld(*world, "Assets/Cube.fbx");
+
     while !g_quit {
         UpdateFrameTimes();
 
@@ -139,6 +147,8 @@ main :: () {
 
         ProcessShaderDirectoryChanges();
 
+        UpdateCamera(*world, *camera);
+
         ImGui_SDL.NewFrame();
         ImGui.NewFrame();
         ImGui.ShowDemoWindow();
@@ -161,7 +171,7 @@ main :: () {
 
         ImGui.Render();
 
-        RenderFrame();
+        RenderFrame(*world, *camera);
 
         if !(SDL_GetWindowFlags(g_window) & SDL_WINDOW_INPUT_FOCUS) {
             elapsed := g_last_frame_time;
