@@ -159,6 +159,7 @@ InitImGuiPipeline :: () {
     pipeline_desc.blend_states[0] = .{enabled=true};
 
     pipeline_desc.layout.binding_sets = .[
+        g_binding_set_layouts.FrameBindingSet,
         g_binding_set_layouts.ImGuiPassBindingSet,
         g_binding_set_layouts.ImGuiDrawCallBindingSet,
     ];
@@ -168,7 +169,7 @@ InitImGuiPipeline :: () {
     CreateGfxGraphicsPipeline(*g_imgui_pipeline, "ImGui", pipeline_desc);
 }
 
-ImGuiPass :: (cmd_buffer : *GfxCommandBuffer, draw_data : *ImGui.ImDrawData) {
+ImGuiPass :: (cmd_buffer : *GfxCommandBuffer, draw_data : *ImGui.ImDrawData, clear := false) {
     if IsNull(*g_imgui_pipeline) {
         InitImGuiPipeline();
     }
@@ -290,7 +291,9 @@ ImGuiPass :: (cmd_buffer : *GfxCommandBuffer, draw_data : *ImGui.ImDrawData) {
 
     pass_desc : GfxRenderPassDesc;
     AddColorAttachment(*pass_desc, *g_final_texture);
-    ClearColor(*pass_desc, 0, Vec4f.{0,0,0,0});
+    if clear {
+        ClearColor(*pass_desc, 0, Vec4f.{0,0,0,0});
+    }
 
     global_vtx_offset := 0;
     global_idx_offset := 0;
@@ -301,7 +304,7 @@ ImGuiPass :: (cmd_buffer : *GfxCommandBuffer, draw_data : *ImGui.ImDrawData) {
 
         BindVertexBuffer(*pass, 0, vertex_buffer);
         BindIndexBuffer(*pass, ifx size_of(ImGui.ImDrawIdx) == 2 then .UInt16 else .UInt32, index_buffer);
-        BindGraphicsBindingSet(*pass, 0, *pass_binding_set);
+        BindGraphicsBindingSet(*pass, 1, *pass_binding_set);
 
         current_texture : *GfxTexture;
 
@@ -349,7 +352,7 @@ ImGuiPass :: (cmd_buffer : *GfxCommandBuffer, draw_data : *ImGui.ImDrawData) {
                             texture=.{sampler=*g_linear_clamp_sampler, texture=xx cmd.TextureId},
                         });
 
-                        BindGraphicsBindingSet(*pass, 1, *binding_set);
+                        BindGraphicsBindingSet(*pass, 2, *binding_set);
                         current_texture = xx cmd.TextureId;
                     }
 

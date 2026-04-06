@@ -1,6 +1,6 @@
 #include "common.glsl"
 
-layout(set=0, binding=0, std140) uniform Projection {
+layout(set=1, binding=0, std140) uniform Projection {
     float4x4 u_projection;
 };
 

@@ -63,6 +63,10 @@ GfxContext :: struct {
 
 g_vk_alloc_callbacks : *VkAllocationCallbacks;
 
+GetFrameIndex :: inline () -> int {
+    return g_gfx_context.frame_index;
+} @NoProfile
+
 GetFrameInFlight :: inline () -> int {
     return g_gfx_context.frame_in_flight;
 } @NoProfile

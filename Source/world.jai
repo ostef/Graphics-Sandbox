@@ -244,7 +244,7 @@ LoadWorld :: (world : *World, filename : string) -> bool {
 
     cfilename := CStringClone(filename ,, Temp);
     LogMessage("Loading world '%'", filename);
-    ai_scene := Assimp.aiImportFileEx(cfilename, xx (Assimp.aiPostProcessSteps.Triangulate | .CalcTangentSpace), null);
+    ai_scene := Assimp.aiImportFileEx(cfilename, xx (Assimp.aiPostProcessSteps.Triangulate | .CalcTangentSpace | .MakeLeftHanded), null);
     if !ai_scene {
         return false;
     }
@@ -286,6 +286,8 @@ LoadWorld :: (world : *World, filename : string) -> bool {
             entity.local_scale = scale;
             if parent {
                 AttachEntity(world, entity, parent);
+            } else {
+                UpdateWorldTransform(world, entity);
             }
         } else {
             entity : *Entity;
@@ -296,6 +298,8 @@ LoadWorld :: (world : *World, filename : string) -> bool {
                 entity.local_scale = scale;
                 if parent {
                     AttachEntity(world, entity, parent);
+                } else {
+                    UpdateWorldTransform(world, entity);
                 }
             }
 
@@ -309,6 +313,8 @@ LoadWorld :: (world : *World, filename : string) -> bool {
                 mesh_entity.mesh = loaded_meshes[mesh_index];
                 if parent {
                     AttachEntity(world, mesh_entity, parent);
+                } else {
+                    UpdateWorldTransform(world, mesh_entity);
                 }
 
                 if !entity {
@@ -326,6 +332,8 @@ LoadWorld :: (world : *World, filename : string) -> bool {
     CreateEntityHierarchy(world, null, ai_scene.mRootNode, loaded_meshes);
 
     LogMessage("Loaded world '%'", filename);
+    LogMessage("% Empty entities", world.Empty_entities.count);
+    LogMessage("% Mesh entities", world.Mesh_entities.count);
 
     return true;
 }

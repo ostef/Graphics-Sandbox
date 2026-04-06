@@ -11,8 +11,8 @@ StaticMesh :: struct {
     slot_index : PagedArraySlotInfo;
     vertex_buffer : GfxBuffer;
     index_buffer : GfxBuffer;
-    vertex_count : int;
-    index_count : int;
+    vertex_count : u32;
+    index_count : u32;
 }
 
 g_static_meshes : PagedArray(StaticMesh, 100);
@@ -107,7 +107,7 @@ LoadStaticMeshFromAssimpMesh :: (mesh : *StaticMesh, ai_mesh : *Assimp.aiMesh) -
     index_buffer_desc.usage = .TransferDst | .IndexBuffer;
     index_buffer_desc.memory_usage = .GPUOnly;
     mesh.index_buffer = CreateGfxBuffer(TPrint("'%' indices", name), index_buffer_desc);
-    mesh.index_count = indices.count;
+    mesh.index_count = xx indices.count;
     QueueBufferUpload(*mesh.index_buffer, indices.data, xx index_buffer_desc.size);
 
     vertex_buffer_desc : GfxBufferDesc;
@@ -115,7 +115,7 @@ LoadStaticMeshFromAssimpMesh :: (mesh : *StaticMesh, ai_mesh : *Assimp.aiMesh) -
     vertex_buffer_desc.usage = .TransferDst | .VertexBuffer;
     vertex_buffer_desc.memory_usage = .GPUOnly;
     mesh.vertex_buffer = CreateGfxBuffer(TPrint("'%' vertices", name), vertex_buffer_desc);
-    mesh.vertex_count = vertices.count;
+    mesh.vertex_count = xx vertices.count;
     QueueBufferUpload(*mesh.vertex_buffer, vertices.data, xx vertex_buffer_desc.size);
 
     mesh.name = StringClone(name);

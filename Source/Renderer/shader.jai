@@ -18,6 +18,8 @@ LoadedShader :: struct {
 g_shader_file_watcher : File_Watcher;
 g_shaders := LoadedShader.[
     .{name="imgui"},
+    .{name="mesh_geometry"},
+    .{name="opaque_shading"},
 ];
 
 g_graphics_pipelines : [..]*GfxGraphicsPipeline;

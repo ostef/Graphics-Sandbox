@@ -3,6 +3,7 @@
 #load "allocator.jai";
 #load "glsl_packing.jai";
 #load "imgui.jai";
+#load "forward_pass.jai";
 
 Reverse_Depth_Range :: true;
 
@@ -14,10 +15,18 @@ Reverse_Depth_Range :: true;
     Depth_Clear :: 1.0;
 }
 
+g_dummy_frame_pipeline_layout : GfxPipelineLayout; // Used to bind the per frame binding set outside of a pass
+
 g_final_texture : GfxTexture;
+g_hdr_color_texture : GfxTexture;
+g_depth_texture : GfxTexture;
 
 g_linear_clamp_sampler : GfxSampler;
 g_nearest_clamp_sampler : GfxSampler;
+
+FrameBindingSet :: struct {
+    frame_info : GfxBindingUniformBuffer; @Binding(0) @VertexStage @FragmentStage
+} @BindingSet
 
 InitRenderer :: () {
     if !LoadAllShaders() {
@@ -43,10 +52,18 @@ InitRenderer :: () {
     sampler_desc.min_filter = .Nearest;
     sampler_desc.mag_filter = .Nearest;
     g_nearest_clamp_sampler = CreateGfxSampler("Nearest Clamp", sampler_desc);
+
+    frame_layout_desc : GfxPipelineLayoutDesc;
+    frame_layout_desc.binding_sets = .[
+        g_binding_set_layouts.FrameBindingSet,
+    ];
+    g_dummy_frame_pipeline_layout = CreateGfxPipelineLayout("Dummy Frame", frame_layout_desc);
 }
 
 ShutdownRenderer :: () {
     WaitForGPUIdle();
+
+    DestroyGfxPipelineLayout(*g_dummy_frame_pipeline_layout);
 
     DestroyGfxSampler(*g_linear_clamp_sampler);
     DestroyGfxSampler(*g_nearest_clamp_sampler);
@@ -76,6 +93,8 @@ ShutdownRenderer :: () {
 
 DestroyRenderTargets :: () {
     DestroyGfxTexture(*g_final_texture);
+    DestroyGfxTexture(*g_hdr_color_texture);
+    DestroyGfxTexture(*g_depth_texture);
 }
 
 RecreateRenderTargets :: () {
@@ -92,8 +111,15 @@ RecreateRenderTargets :: () {
 
     desc.pixel_format = .RGBA8UNorm;
     desc.usage = .ColorAttachment | .TransferSrc;
-
     g_final_texture = CreateGfxTexture("Final", desc);
+
+    desc.pixel_format = .RGBA16Float;
+    desc.usage = .ColorAttachment | .Sampled;
+    g_hdr_color_texture = CreateGfxTexture("HDR Color", desc);
+
+    desc.pixel_format = .Depth32Float;
+    desc.usage = .DepthStencilAttachment;
+    g_depth_texture = CreateGfxTexture("Depth", desc);
 }
 
 RenderFrame :: (world : *World, camera : *Camera) {
@@ -110,8 +136,22 @@ RenderFrame :: (world : *World, camera : *Camera) {
         PerformPendingBufferUploads(*upload_pass);
     EndGfxCopyPass(*upload_pass);
 
-    AddTextureBarrier(*cmd_buffer, .Undefined, .ColorAttachment, *g_final_texture);
+    AddTextureBarriers(*cmd_buffer, .Undefined, .ColorAttachment, .[*g_final_texture, *g_hdr_color_texture]);
 
+    frame_info := FrameInfo.{
+        time=xx Basic.to_float64_seconds(Basic.current_time_monotonic()),
+        frame_index=xx,no_check GetFrameIndex(),
+    };
+    frame_info_offset, frame_info_size := AllocAndPackUniformFrameData(frame_info);
+
+    frame_bindings := FrameBindingSet.{
+        frame_info=.{buffer=FrameDataBuffer(), offset=xx frame_info_offset, size=xx frame_info_size},
+    };
+    frame_binding_set := CreateGfxBindingSet(GlobalBindingSetAllocator(), frame_bindings);
+
+    BindGraphicsBindingSet(*cmd_buffer, *g_dummy_frame_pipeline_layout, 0, *frame_binding_set);
+
+    ForwardPass(*cmd_buffer, world, camera);
     ImGuiPass(*cmd_buffer, ImGui.GetDrawData());
 
     AddTextureBarrier(*cmd_buffer, .ColorAttachment, .TransferSrc, *g_final_texture);

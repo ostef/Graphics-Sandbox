@@ -8,6 +8,7 @@ Basic :: #import "Basic";
 using,only(.["+","-","*","/","<",">","=="]) Basic;
 
 #load "Source/Build/binding_set.jai";
+#load "Source/Build/shader_codegen.jai";
 
 Bindings_To_Generate :: string.[
     "Source/Modules/ImGui",
@@ -21,6 +22,9 @@ HandleDeclaration :: (workspace : Workspace, decl : *Code_Declaration) {
     for note : decl.notes {
         if note.text == "BindingSet" {
             AddBindingSetType(workspace, decl);
+        }
+        if note.text == "ShaderType" {
+            AddShaderType(decl);
         }
     }
 }
@@ -226,6 +230,10 @@ Build :: () {
         if it.shutdown {
             it.shutdown(it);
         }
+    }
+
+    if !compilation_failed {
+        GenerateGLSLShaderCode();
     }
 
     #if OS == .WINDOWS {
