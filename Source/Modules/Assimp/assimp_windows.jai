@@ -4008,4 +4008,4 @@ aiQuaternionInterpolate :: (dst: *aiQuaternion, start: *aiQuaternion, end: *aiQu
 
 #scope_file
 
-Assimp :: #library "Libs/Windows/assimp-vc143-mtd";
+Assimp :: #library "Libs/Windows/assimp-vc143-mt";

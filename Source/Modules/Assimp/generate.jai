@@ -31,28 +31,55 @@ CMake_Options :: string.[
 
     compile_source := false;
 
+    build_config := "RelWithDebInfo";
     args := get_build_options().compile_time_command_line;
-    for args {
-        if it == {
+    index := 0;
+    while index < args.count {
+        defer index += 1;
+
+        if args[index] == {
         case "build";
             compile_source = true;
+
+        case "config";
+            index += 1;
+
+            if index == args.count {
+                log_error("Missing parameter for 'config'");
+                compiler_set_workspace_status(.FAILED);
+                return;
+            }
+
+            build_config = args[index];
         }
     }
 
     if compile_source {
-        if !BuildAssimp() {
+        if !BuildAssimp(build_config) {
             compiler_set_workspace_status(.FAILED);
             return;
         }
     }
 
-    if !GenerateBindings() {
+    if !GenerateBindings(build_config) {
         compiler_set_workspace_status(.FAILED);
         return;
     }
 }
 
-BuildAssimp :: () -> bool {
+BuildAssimp :: (config : string) -> bool {
+    if config == {
+    case "Debug";
+    case "Release";
+    case "MinSizeRel";
+    case "RelWithDebInfo";
+    case;
+        log_error("Invalid config '%'", config);
+        return false;
+    }
+
+    release := config != "Debug";
+
     {
         working_dir := get_working_directory();
         defer set_working_directory(working_dir);
@@ -73,11 +100,13 @@ BuildAssimp :: () -> bool {
             array_add(*cmd, it);
         }
 
+        array_add(*cmd, tprint("-DCMAKE_BUILD_TYPE=%", config));
+
         if run_command(..cmd).exit_code != 0 {
             return false;
         }
 
-        if run_command("cmake", "--build", ".build").exit_code != 0 {
+        if run_command("cmake", "--build", ".build", "--config", config).exit_code != 0 {
             return false;
         }
     }
@@ -128,9 +157,9 @@ BuildAssimp :: () -> bool {
         delete_directory("Libs/Windows");
         ok &= make_directory_if_it_does_not_exist("Libs/Windows", recursive=true);
 
-        ok &= copy_file("Source/.build/bin/Debug/assimp-vc143-mtd.pdb", "Libs/Windows/assimp-vc143-mtd.pdb");
-        ok &= copy_file("Source/.build/bin/Debug/assimp-vc143-mtd.dll", "Libs/Windows/assimp-vc143-mtd.dll");
-        ok &= copy_file("Source/.build/lib/Debug/assimp-vc143-mtd.lib", "Libs/Windows/assimp-vc143-mtd.lib");
+        ok &= copy_file(tprint("Source/.build/bin/%/assimp-vc143-mt%.pdb", config, ifx !release then "d"), tprint("Libs/Windows/assimp-vc143-mt%.pdb", ifx !release then "d"));
+        ok &= copy_file(tprint("Source/.build/bin/%/assimp-vc143-mt%.dll", config, ifx !release then "d"), tprint("Libs/Windows/assimp-vc143-mt%.dll", ifx !release then "d"));
+        ok &= copy_file(tprint("Source/.build/lib/%/assimp-vc143-mt%.lib", config, ifx !release then "d"), tprint("Libs/Windows/assimp-vc143-mt%.lib", ifx !release then "d"));
     } else #if OS == .LINUX {
         make_directory_if_it_does_not_exist("Lib/Linux", recursive=true);
 
@@ -142,7 +171,17 @@ BuildAssimp :: () -> bool {
     return ok;
 }
 
-GenerateBindings :: () -> bool {
+GenerateBindings :: (config : string) -> bool {
+    if config == {
+    case "Debug";
+    case "Release";
+    case "MinSizeRel";
+    case "RelWithDebInfo";
+    case;
+        log_error("Invalid config '%'", config);
+        return false;
+    }
+
     #if OS == .WINDOWS {
         output_filename := "assimp_windows.jai";
     } else #if OS == .LINUX {
@@ -162,7 +201,8 @@ GenerateBindings :: () -> bool {
         array_add(*opts.library_search_paths, "Libs/MacOS");
     }
 
-    array_add(*opts.libraries, Library.{filename="assimp-vc143-mtd", identifier="Assimp"});
+    release := config != "Debug";
+    array_add(*opts.libraries, Library.{filename=ifx release then "assimp-vc143-mt" else "assimp-vc143-mtd", identifier="Assimp"});
     array_add(*opts.include_paths, "Headers");
 
     array_add(*opts.source_files, "Headers/assimp/types.h");

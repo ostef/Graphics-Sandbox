@@ -110,7 +110,7 @@ main :: () {
 
     camera : Camera;
     world : World;
-    LoadWorld(*world, "Assets/Cube.fbx");
+    LoadWorld(*world, "Assets/CosyRoom.fbx");
 
     while !g_quit {
         UpdateFrameTimes();

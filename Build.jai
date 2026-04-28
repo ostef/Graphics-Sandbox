@@ -245,8 +245,8 @@ Build :: () {
             copy_file("Source/Modules/SDL/Libs/Windows/SDL2.dll", "SDL2.dll");
         }
 
-        if !file_exists("assimp-vc143-mtd.dll") {
-            copy_file("Source/Modules/Assimp/Libs/Windows/assimp-vc143-mtd.dll", "assimp-vc143-mtd.dll");
+        if !file_exists("assimp-vc143-mt.dll") {
+            copy_file("Source/Modules/Assimp/Libs/Windows/assimp-vc143-mt.dll", "assimp-vc143-mt.dll");
         }
     }
 }

@@ -15,5 +15,5 @@ layout(location=6) in float4 in_color;
 layout(location=0) out float4 out_color;
 
 void main() {
-    out_color = float4(in_position,1);
+    out_color = float4(in_normal,1);
 }
