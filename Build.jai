@@ -13,6 +13,8 @@ using,only(.["+","-","*","/","<",">","=="]) Basic;
 Bindings_To_Generate :: string.[
     "Source/Modules/ImGui",
     "Source/Modules/Vulkan",
+    "Source/Modules/Assimp",
+    "Source/Modules/meshoptimizer",
 ];
 
 Default_Plugins :: string.[

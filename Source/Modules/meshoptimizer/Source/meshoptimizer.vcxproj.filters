@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\allocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\clusterizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\indexanalyzer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\indexcodec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\indexgenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\meshletcodec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\meshletutils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\opacitymap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\overdrawoptimizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\partition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\quantization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\rasterizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\simplifier.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\spatialorder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\stripifier.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\vcacheoptimizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\vertexcodec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\vertexfilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\vfetchoptimizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\src\meshoptimizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Dev\Graphics-Sandbox\Source\Modules\meshoptimizer\Source\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{019F7206-7CC5-3579-823B-6756A1F4ADF8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{932281D9-34D5-3FC5-B196-88ACECFCD65A}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

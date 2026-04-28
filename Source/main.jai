@@ -11,6 +11,8 @@ Assimp :: #import "Assimp";
 ImGui :: #import "ImGui";
 ImGui_SDL :: #import "ImGui/Impl/SDL";
 
+meshopt :: #import "meshoptimizer";
+
 Basic :: #import "Basic";
 using,only(.["+","-","*","/","<",">","=="]) Basic;
 Math :: #import "Math";
