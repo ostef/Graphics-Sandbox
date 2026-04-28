@@ -1,6 +1,7 @@
 #import "Common";
 #import "Linalg";
 #import "Hash_Map";
+#import "Hash";
 #import "Type_Utils";
 
 #import "SDL";

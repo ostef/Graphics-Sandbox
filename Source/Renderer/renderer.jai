@@ -46,12 +46,12 @@ InitRenderer :: () {
     sampler_desc : GfxSamplerDesc;
     sampler_desc.min_filter = .Linear;
     sampler_desc.mag_filter = .Linear;
-    g_linear_clamp_sampler = CreateGfxSampler("Linear Clamp", sampler_desc);
+    g_linear_clamp_sampler = CreateGfxSampler(sampler_desc);
 
     sampler_desc = .{};
     sampler_desc.min_filter = .Nearest;
     sampler_desc.mag_filter = .Nearest;
-    g_nearest_clamp_sampler = CreateGfxSampler("Nearest Clamp", sampler_desc);
+    g_nearest_clamp_sampler = CreateGfxSampler(sampler_desc);
 
     frame_layout_desc : GfxPipelineLayoutDesc;
     frame_layout_desc.binding_sets = .[

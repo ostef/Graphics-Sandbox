@@ -3,6 +3,7 @@
 #load "initialization.jai";
 #load "buffer.jai";
 #load "texture.jai";
+#load "sampler.jai";
 #load "render_pass.jai";
 #load "compute_pass.jai";
 #load "copy_pass.jai";
@@ -47,6 +48,12 @@ GfxContext :: struct {
     last_frame_statistics : GfxFrameStatistics;
     frame_statistics : GfxFrameStatistics;
 
+    CachedSampler :: struct {
+        ref_count : int;
+        sampler : GfxSampler;
+    }
+
+    sampler_cache : HashMap(GfxSamplerDesc, CachedSampler, hash_func=(key) => fnv1a_hash(*key, size_of(GfxSamplerDesc)), comp_func=(a, b) => memcmp(*a, *b, size_of(GfxSamplerDesc)) == 0);
     texture_view_collectors : [Gfx_Num_Frames_In_Flight]GfxGarbageCollector(GfxTexture);
     texture_collectors : [Gfx_Num_Frames_In_Flight]GfxGarbageCollector(GfxTexture);
     sampler_collectors : [Gfx_Num_Frames_In_Flight]GfxGarbageCollector(GfxSampler);
