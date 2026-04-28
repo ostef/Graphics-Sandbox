@@ -109,6 +109,10 @@ main :: () {
     InitRenderer();
     defer ShutdownRenderer();
 
+    defer for * g_static_meshes {
+        DestroyStaticMesh(it);
+    }
+
     camera : Camera;
     world : World;
     LoadWorld(*world, "Assets/CosyRoom.fbx");
